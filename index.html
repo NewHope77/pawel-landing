@@ -168,10 +168,9 @@
   .about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;align-items:center}
   @media(max-width:860px){.about-grid{grid-template-columns:1fr;gap:32px}}
   .avatar{
-    width:100%;max-width:300px;aspect-ratio:1;border-radius:26px;margin:0 auto;
-    background:linear-gradient(135deg,#e9edf2,#f7f9fb);border:1px solid var(--border);
-    display:flex;align-items:center;justify-content:center;font-size:88px;font-weight:800;color:#c3cbd6;
-    box-shadow:var(--shadow);
+    width:100%;max-width:320px;aspect-ratio:1;border-radius:26px;margin:0 auto;
+    display:block;object-fit:cover;object-position:50% 30%;
+    border:1px solid var(--border);box-shadow:var(--shadow);
   }
   .about p{color:var(--ink-soft);font-size:16.5px;margin-top:16px}
   .about .pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
@@ -474,7 +473,7 @@
   <!-- ===== O MNIE ===== -->
   <section id="omnie">
     <div class="container about-grid">
-      <div class="avatar">P</div>
+      <img class="avatar" src="shots/pawel.jpg" alt="Paweł" width="553" height="640">
       <div class="about">
         <span class="eyebrow reveal">O mnie</span>
         <h2 class="title reveal">Cześć, jestem Paweł 👋</h2>
