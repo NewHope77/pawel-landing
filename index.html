@@ -328,6 +328,20 @@
   .faq-item .faq-a{padding:0 20px 18px;color:var(--ink-soft);font-size:15px;line-height:1.65}
   .faq-item .faq-a a{color:var(--ink);border-bottom:1px solid var(--border)}
 
+  /* ---------- Blog (teaser na stronie głównej) ---------- */
+  .hb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:44px}
+  @media(max-width:900px){.hb-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.hb-grid{grid-template-columns:1fr}}
+  .hb-card{border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--bg);box-shadow:var(--shadow-sm);text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s}
+  .hb-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .hb-card img{aspect-ratio:1200/630;object-fit:cover;width:100%}
+  .hb-card .b{padding:15px 16px;flex:1}
+  .hb-card .cat{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+  .hb-card h3{font-size:15.5px;font-weight:700;line-height:1.3;margin-top:5px}
+  .hb-more{text-align:center;margin-top:34px}
+  .hb-more a{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--ink);border:1px solid var(--border);padding:12px 24px;border-radius:12px;text-decoration:none;transition:box-shadow .15s,transform .15s}
+  .hb-more a:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+
   /* reveal */
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
   .reveal.in{opacity:1;transform:none}
@@ -384,6 +398,7 @@
         <a href="#realizacje">Realizacje</a>
         <a href="#omnie">O mnie</a>
         <a href="#faq">FAQ</a>
+        <a href="blog/">Blog</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
       <a class="nav-cta" href="https://wa.me/48500864204" target="_blank" rel="noopener">
@@ -642,6 +657,34 @@
           <div class="faq-a">Poza stronami: SEO, Wizytówkę Google, projekt logo oraz automatyzacje powtarzalnych zadań (powiadomienia, e-maile, integracje). Wszystko od jednej osoby, spójnie i bez chaosu.</div>
         </details>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOG (teaser) ===== -->
+  <section id="blog">
+    <div class="container">
+      <span class="eyebrow reveal">Blog · Poradnik</span>
+      <h2 class="title reveal">Wiedza, która pomoże Ci zdecydować</h2>
+      <p class="lead reveal">Krótkie, konkretne artykuły o stronach, SEO i Google — bez żargonu.</p>
+      <div class="hb-grid">
+        <a class="hb-card reveal" href="blog/ile-kosztuje-strona-internetowa/">
+          <img src="blog/img/ile-kosztuje-strona-internetowa.jpg" alt="Ile kosztuje strona internetowa w 2026 roku?" width="1200" height="630" loading="lazy">
+          <div class="b"><span class="cat">Cennik</span><h3>Ile kosztuje strona internetowa w 2026 roku?</h3></div>
+        </a>
+        <a class="hb-card reveal" href="blog/strona-czy-wizytowka-google/">
+          <img src="blog/img/strona-czy-wizytowka-google.jpg" alt="Strona wizytówkowa czy Wizytówka Google — co wybrać?" width="1200" height="630" loading="lazy">
+          <div class="b"><span class="cat">Poradnik</span><h3>Strona wizytówkowa czy Wizytówka Google?</h3></div>
+        </a>
+        <a class="hb-card reveal" href="blog/po-co-malej-firmie-seo/">
+          <img src="blog/img/po-co-malej-firmie-seo.jpg" alt="Po co małej firmie SEO i jak zacząć?" width="1200" height="630" loading="lazy">
+          <div class="b"><span class="cat">SEO</span><h3>Po co małej firmie SEO i jak zacząć?</h3></div>
+        </a>
+        <a class="hb-card reveal" href="blog/materialy-strona-w-2-dni/">
+          <img src="blog/img/materialy-strona-w-2-dni.jpg" alt="Jak przygotować materiały, żeby strona powstała w 2 dni" width="1200" height="630" loading="lazy">
+          <div class="b"><span class="cat">Praktyka</span><h3>Jak przygotować materiały na stronę w 2 dni</h3></div>
+        </a>
+      </div>
+      <div class="hb-more reveal"><a href="blog/">Wszystkie artykuły →</a></div>
     </div>
   </section>
 
