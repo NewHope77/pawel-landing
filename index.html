@@ -193,6 +193,19 @@
   .work .link{margin-top:16px;font-weight:600;font-size:14.5px;color:var(--ink);display:inline-flex;gap:6px;align-items:center}
   .work .link .ar{transition:transform .18s}
   .work:hover .link .ar{transform:translateX(4px)}
+  .work .thumb.zoomable{cursor:zoom-in;position:relative}
+  .work .thumb.zoomable::after{content:"⤢";position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:8px;background:rgba(14,17,22,.62);color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .18s}
+  .work:hover .thumb.zoomable::after{opacity:1}
+  .link.as-btn{background:none;border:0;padding:0;font:inherit;cursor:pointer}
+
+  /* ---------- Lightbox ---------- */
+  .lb{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(14,17,22,.86);backdrop-filter:blur(3px)}
+  .lb.open{display:flex}
+  .lb figure{margin:0;max-width:min(1120px,95vw);max-height:92vh;display:flex;flex-direction:column;gap:10px}
+  .lb img{width:100%;height:auto;max-height:84vh;object-fit:contain;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .lb figcaption{color:#cfd3d9;font-size:13.5px;text-align:center}
+  .lb-close{position:absolute;top:18px;right:22px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+  .lb-close:hover{background:rgba(255,255,255,.18)}
 
   /* ---------- O MNIE ---------- */
   .about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;align-items:center}
@@ -496,6 +509,15 @@
           </div>
         </article>
         <article class="work reveal">
+          <div class="thumb zoomable" data-lb="shots/doodle-full.jpg" data-lb-cap="DoodleHouse — strona hodowli Australian Labradoodle (projekt)"><img src="shots/doodle.jpg" alt="DoodleHouse — podgląd projektu strony" loading="lazy" width="780" height="500"></div>
+          <div class="body">
+            <h3>DoodleHouse</h3>
+            <div class="tag">Strona hodowli · projekt</div>
+            <p>Strona domowej hodowli Australian Labradoodle (PL/EN) — hero, galeria, dogoterapia i FAQ. Projekt graficzny i wykonanie.</p>
+            <button class="link as-btn" type="button" data-lb="shots/doodle-full.jpg" data-lb-cap="DoodleHouse — strona hodowli Australian Labradoodle (projekt)">Zobacz projekt <span class="ar">→</span></button>
+          </div>
+        </article>
+        <article class="work reveal">
           <div class="thumb"><img src="shots/kluczi.jpg" alt="Kluczi — podgląd strony" loading="lazy" width="780" height="500"></div>
           <div class="body">
             <h3>Kluczi</h3>
@@ -598,9 +620,29 @@
         });
       }, {passive:true});
     }
+
+    // Lightbox (podgląd projektu bez zewnętrznej strony)
+    document.addEventListener('DOMContentLoaded', function(){
+      const lb=document.getElementById('lightbox');
+      if(!lb) return;
+      const img=lb.querySelector('img'), cap=lb.querySelector('figcaption');
+      function open(src,c){ img.src=src; cap.textContent=c||''; lb.classList.add('open'); document.body.style.overflow='hidden'; }
+      function close(){ lb.classList.remove('open'); document.body.style.overflow=''; img.src=''; }
+      document.querySelectorAll('[data-lb]').forEach(el=>{
+        el.addEventListener('click',e=>{ e.preventDefault(); open(el.dataset.lb, el.dataset.lbCap); });
+      });
+      lb.addEventListener('click',e=>{ if(e.target===lb || e.target.classList.contains('lb-close')) close(); });
+      document.addEventListener('keydown',e=>{ if(e.key==='Escape' && lb.classList.contains('open')) close(); });
+    });
   </script>
 
   <!-- Dane strukturalne (Schema.org) -->
+  <!-- Lightbox -->
+  <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Podgląd projektu">
+    <button class="lb-close" type="button" aria-label="Zamknij">×</button>
+    <figure><img src="" alt="Podgląd projektu"><figcaption></figcaption></figure>
+  </div>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
