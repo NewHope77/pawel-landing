@@ -185,6 +185,10 @@
   .work:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
   .work .thumb{height:158px;overflow:hidden;position:relative;background:var(--bg-alt);border-bottom:1px solid var(--border)}
   .work .thumb .wip{position:absolute;top:10px;left:10px;z-index:2;background:#f59e0b;color:#3a2600;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:4px 9px;border-radius:7px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .work .thumb .seo{position:absolute;bottom:10px;left:10px;z-index:2;display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#2be06f,#12a150);color:#04310f;font-size:11px;font-weight:800;letter-spacing:.02em;padding:5px 11px;border-radius:999px;white-space:nowrap;animation:seoGlow 2.2s ease-in-out infinite}
+  .work .thumb .seo::before{content:"✓";font-size:12px;font-weight:900}
+  @keyframes seoGlow{0%,100%{box-shadow:0 0 7px 1px rgba(43,224,111,.5),0 2px 8px rgba(0,0,0,.28)}50%{box-shadow:0 0 20px 5px rgba(43,224,111,.92),0 2px 8px rgba(0,0,0,.28)}}
+  @media (prefers-reduced-motion: reduce){.work .thumb .seo{animation:none}}
   .work .thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .4s ease}
   .work:hover .thumb img{transform:scale(1.04)}
   .work .body{padding:20px 22px;flex:1;display:flex;flex-direction:column}
@@ -475,7 +479,7 @@
 
       <div class="work-grid">
         <article class="work reveal">
-          <div class="thumb"><img src="shots/basniowa.jpg" alt="Baśniowa Polana — podgląd strony" loading="lazy" width="780" height="500"></div>
+          <div class="thumb"><img src="shots/basniowa.jpg" alt="Baśniowa Polana — podgląd strony" loading="lazy" width="780" height="500"><span class="seo">SEO wykonane</span></div>
           <div class="body">
             <h3>Baśniowa Polana</h3>
             <div class="tag">Strona + SEO</div>
@@ -484,7 +488,7 @@
           </div>
         </article>
         <article class="work reveal">
-          <div class="thumb"><img src="shots/kris.jpg" alt="Kris Boats Zegrze — podgląd strony" loading="lazy" width="780" height="500"></div>
+          <div class="thumb"><img src="shots/kris.jpg" alt="Kris Boats Zegrze — podgląd strony" loading="lazy" width="780" height="500"><span class="seo">SEO wykonane</span></div>
           <div class="body">
             <h3>Kris Boats Zegrze</h3>
             <div class="tag">Landing page</div>
@@ -493,7 +497,7 @@
           </div>
         </article>
         <article class="work reveal">
-          <div class="thumb"><img src="shots/fenix.jpg" alt="Fenix — Pomoc drogowa — podgląd strony" loading="lazy" width="780" height="500"></div>
+          <div class="thumb"><img src="shots/fenix.jpg" alt="Fenix — Pomoc drogowa — podgląd strony" loading="lazy" width="780" height="500"><span class="seo">SEO wykonane</span></div>
           <div class="body">
             <h3>Fenix — Pomoc drogowa</h3>
             <div class="tag">Landing page</div>
@@ -502,7 +506,7 @@
           </div>
         </article>
         <article class="work reveal">
-          <div class="thumb"><img src="shots/clim.jpg" alt="Clim System — podgląd strony" loading="lazy" width="780" height="500"></div>
+          <div class="thumb"><img src="shots/clim.jpg" alt="Clim System — podgląd strony" loading="lazy" width="780" height="500"><span class="seo">SEO wykonane</span></div>
           <div class="body">
             <h3>Clim System</h3>
             <div class="tag">Strona + wdrożenie</div>
@@ -520,7 +524,7 @@
           </div>
         </article>
         <article class="work reveal">
-          <div class="thumb"><img src="shots/kluczi.jpg" alt="Kluczi — podgląd strony" loading="lazy" width="780" height="500"></div>
+          <div class="thumb"><img src="shots/kluczi.jpg" alt="Kluczi — podgląd strony" loading="lazy" width="780" height="500"><span class="seo">SEO wykonane</span></div>
           <div class="body">
             <h3>Kluczi</h3>
             <div class="tag">Sklep / usługa</div>
