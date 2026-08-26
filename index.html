@@ -86,8 +86,13 @@
     border-bottom:1px solid var(--border);
   }
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
-  .brand{font-weight:800;font-size:18px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px}
-  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  .brand{font-weight:800;font-size:23px;letter-spacing:-.035em;display:flex;align-items:center;gap:9px;font-feature-settings:"ss01"}
+  .brand .dot{width:11px;height:11px;border-radius:3px;background:var(--accent);box-shadow:0 0 0 4px rgba(37,211,102,.16);transform:rotate(0deg);transition:transform .3s}
+  .brand:hover .dot{transform:rotate(45deg)}
+  .brand .name .sur{background:linear-gradient(115deg,#25D366 15%,#3b82f6 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .brand .caret{width:3px;height:19px;border-radius:1px;background:var(--accent);margin-left:1px;animation:caretBlink 1.15s infinite}
+  @keyframes caretBlink{0%,46%{opacity:1}54%,100%{opacity:0}}
+  @media (prefers-reduced-motion: reduce){.brand .caret{animation:none;opacity:1}}
   .nav-links{display:flex;gap:30px;font-size:15px;font-weight:500}
   .nav-links a{color:var(--ink-soft);transition:color .15s}
   .nav-links a:hover{color:var(--ink)}
@@ -316,7 +321,7 @@
   <!-- ===== NAV ===== -->
   <header class="nav">
     <div class="container nav-inner">
-      <a href="#top" class="brand"><span class="dot"></span>Paweł Stelmakh</a>
+      <a href="#top" class="brand"><span class="dot"></span><span class="name">Paweł&nbsp;<span class="sur">Stelmakh</span></span><span class="caret"></span></a>
       <nav class="nav-links">
         <a href="#uslugi">Usługi</a>
         <a href="#gwarancja">Gwarancja</a>
