@@ -9,6 +9,9 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#0e1116">
 <meta name="keywords" content="strony internetowe, tworzenie stron, landing page, SEO, Wizytówka Google, Profil Firmy Google, projektowanie logo, automatyzacje, strona wizytówkowa">
+<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="geo.region" content="PL">
+<meta name="geo.placename" content="Polska">
 <link rel="canonical" href="https://pawelsweb.pl/">
 
 <!-- Favicon -->
@@ -314,6 +317,17 @@
   .fab:hover{transform:scale(1.08)}
   .fab svg{width:32px;height:32px;fill:#fff}
 
+  /* ---------- FAQ ---------- */
+  #faq{background:var(--bg-alt)}
+  .faq-list{max-width:780px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px}
+  .faq-item{background:var(--bg);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm)}
+  .faq-item summary{list-style:none;cursor:pointer;padding:18px 20px;font-weight:600;font-size:16px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary::after{content:"+";font-size:22px;font-weight:400;color:var(--muted);flex:none;transition:transform .2s}
+  .faq-item[open] summary::after{transform:rotate(45deg)}
+  .faq-item .faq-a{padding:0 20px 18px;color:var(--ink-soft);font-size:15px;line-height:1.65}
+  .faq-item .faq-a a{color:var(--ink);border-bottom:1px solid var(--border)}
+
   /* reveal */
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
   .reveal.in{opacity:1;transform:none}
@@ -369,6 +383,7 @@
         <a href="#gwarancja">Gwarancja</a>
         <a href="#realizacje">Realizacje</a>
         <a href="#omnie">O mnie</a>
+        <a href="#faq">FAQ</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
       <a class="nav-cta" href="https://wa.me/48500864204" target="_blank" rel="noopener">
@@ -377,6 +392,8 @@
       </a>
     </div>
   </header>
+
+  <main>
 
   <!-- ===== HERO ===== -->
   <section class="hero">
@@ -593,6 +610,41 @@
     </div>
   </section>
 
+  <!-- ===== FAQ ===== -->
+  <section id="faq">
+    <div class="container">
+      <span class="eyebrow reveal">FAQ</span>
+      <h2 class="title reveal">Najczęściej zadawane pytania</h2>
+      <p class="lead reveal">Krótkie odpowiedzi na to, o co pytają najczęściej. Masz inne pytanie? Napisz — chętnie doradzę.</p>
+      <div class="faq-list">
+        <details class="faq-item reveal">
+          <summary>Ile kosztuje strona internetowa?</summary>
+          <div class="faq-a">Strona wizytówkowa to <strong>400 zł</strong>. Sklepy internetowe i większe, rozbudowane projekty wyceniam indywidualnie. Napisz przez <a href="#kontakt">formularz</a> — przygotuję bezpłatną wycenę. Cena nie obejmuje SEO (to osobna usługa).</div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Jak długo trwa wykonanie strony?</summary>
+          <div class="faq-a">Stronę wizytówkową wykonuję w <strong>2 dni robocze</strong> — a jeśli nie zdążę, dostajesz ją gratis. Czas liczony jest od przekazania wszystkich materiałów: tekstów, zdjęć i logo.</div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Czy zajmujesz się też SEO i Wizytówką Google?</summary>
+          <div class="faq-a">Tak. Konfiguruję SEO oraz Profil Firmy w Google i Mapach, dzięki czemu klienci znajdują Twoją firmę w wyszukiwarce i lokalnie. To osobne usługi, które łączę ze stroną.</div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Czy pomagasz z domeną i uruchomieniem strony?</summary>
+          <div class="faq-a">Tak — zajmuję się wszystkim od A do Z: doborem i podpięciem domeny, hostingiem, publikacją oraz konfiguracją. Dostajesz gotową, działającą stronę pod klucz.</div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Dla kogo tworzysz strony?</summary>
+          <div class="faq-a">Dla małych firm, freelancerów i osób prywatnych z całej Polski. Pracuję zdalnie, więc lokalizacja nie ma znaczenia — kontakt i ustalenia prowadzimy online.</div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Co jeszcze mogę u Ciebie zamówić?</summary>
+          <div class="faq-a">Poza stronami: SEO, Wizytówkę Google, projekt logo oraz automatyzacje powtarzalnych zadań (powiadomienia, e-maile, integracje). Wszystko od jednej osoby, spójnie i bez chaosu.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== KONTAKT / CTA ===== -->
   <section id="kontakt">
     <div class="container cta-box">
@@ -627,6 +679,8 @@
       <p class="lf-or reveal">lub napisz od razu na <a href="https://wa.me/48500864204" target="_blank" rel="noopener">WhatsApp</a></p>
     </div>
   </section>
+
+  </main>
 
   <!-- ===== FOOTER ===== -->
   <footer class="site">
@@ -750,30 +804,69 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "@id": "https://pawelsweb.pl/#business",
-    "name": "Paweł — Strony internetowe",
-    "description": "Tworzenie nowoczesnych stron internetowych, konfiguracja SEO i Wizytówki Google, projektowanie logo oraz automatyzacje dla firm.",
-    "url": "https://pawelsweb.pl/",
-    "image": "https://pawelsweb.pl/shots/og-image.jpg",
-    "telephone": "+48500864204",
-    "email": "pashastelmah1234@gmail.com",
-    "priceRange": "od 400 zł",
-    "inLanguage": "pl",
-    "areaServed": { "@type": "Country", "name": "Polska" },
-    "founder": { "@type": "Person", "name": "Paweł" },
-    "sameAs": [ "https://wa.me/48500864204" ],
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Usługi",
-      "itemListElement": [
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Tworzenie stron internetowych" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO — optymalizacja pod Google" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wizytówka Google i Mapy" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Projektowanie logo" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Automatyzacje" } }
-      ]
-    }
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://pawelsweb.pl/#business",
+        "name": "Paweł Stelmakh — Strony internetowe",
+        "description": "Tworzenie nowoczesnych stron internetowych, konfiguracja SEO i Wizytówki Google, projektowanie logo oraz automatyzacje dla firm.",
+        "url": "https://pawelsweb.pl/",
+        "image": "https://pawelsweb.pl/shots/og-image.jpg",
+        "logo": "https://pawelsweb.pl/favicon-512.png",
+        "telephone": "+48500864204",
+        "email": "pashastelmah1234@gmail.com",
+        "priceRange": "od 400 zł",
+        "currenciesAccepted": "PLN",
+        "inLanguage": "pl",
+        "knowsLanguage": ["pl", "uk", "en"],
+        "areaServed": { "@type": "Country", "name": "Polska" },
+        "knowsAbout": ["tworzenie stron internetowych", "landing page", "SEO", "Wizytówka Google", "Google Maps", "projektowanie logo", "automatyzacje", "sklep internetowy"],
+        "founder": { "@id": "https://pawelsweb.pl/#pawel" },
+        "sameAs": ["https://wa.me/48500864204"],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Usługi",
+          "itemListElement": [
+            { "@type": "Offer", "priceCurrency": "PLN", "price": "400", "itemOffered": { "@type": "Service", "name": "Strona wizytówkowa", "description": "Nowoczesna strona wizytówka gotowa w 2 dni robocze — albo gratis." } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sklep internetowy" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO — optymalizacja pod Google" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wizytówka Google i Mapy" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Projektowanie logo" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Automatyzacje" } }
+          ]
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://pawelsweb.pl/#pawel",
+        "name": "Paweł Stelmakh",
+        "jobTitle": "Twórca stron internetowych",
+        "url": "https://pawelsweb.pl/",
+        "image": "https://pawelsweb.pl/shots/pawel.jpg",
+        "worksFor": { "@id": "https://pawelsweb.pl/#business" },
+        "knowsAbout": ["strony internetowe", "SEO", "Google", "logo", "automatyzacje"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://pawelsweb.pl/#website",
+        "url": "https://pawelsweb.pl/",
+        "name": "Paweł Stelmakh — Strony internetowe, SEO, Google",
+        "inLanguage": "pl",
+        "publisher": { "@id": "https://pawelsweb.pl/#business" }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://pawelsweb.pl/#faq",
+        "mainEntity": [
+          { "@type": "Question", "name": "Ile kosztuje strona internetowa?", "acceptedAnswer": { "@type": "Answer", "text": "Strona wizytówkowa to 400 zł. Sklepy internetowe i większe projekty wyceniam indywidualnie — napisz, przygotuję bezpłatną wycenę. Cena nie obejmuje SEO (to osobna usługa)." } },
+          { "@type": "Question", "name": "Jak długo trwa wykonanie strony?", "acceptedAnswer": { "@type": "Answer", "text": "Stronę wizytówkową wykonuję w 2 dni robocze — a jeśli nie zdążę, dostajesz ją gratis. Czas liczony jest od przekazania wszystkich materiałów: tekstów, zdjęć i logo." } },
+          { "@type": "Question", "name": "Czy zajmujesz się też SEO i Wizytówką Google?", "acceptedAnswer": { "@type": "Answer", "text": "Tak. Konfiguruję SEO oraz Profil Firmy w Google i Mapach, dzięki czemu klienci znajdują Twoją firmę w wyszukiwarce i lokalnie." } },
+          { "@type": "Question", "name": "Czy pomagasz z domeną i uruchomieniem strony?", "acceptedAnswer": { "@type": "Answer", "text": "Tak — zajmuję się wszystkim od A do Z: doborem i podpięciem domeny, hostingiem, publikacją oraz konfiguracją. Dostajesz gotową stronę pod klucz." } },
+          { "@type": "Question", "name": "Dla kogo tworzysz strony?", "acceptedAnswer": { "@type": "Answer", "text": "Dla małych firm, freelancerów i osób prywatnych z całej Polski. Pracuję zdalnie, więc lokalizacja nie ma znaczenia." } },
+          { "@type": "Question", "name": "Co jeszcze mogę u Ciebie zamówić?", "acceptedAnswer": { "@type": "Answer", "text": "Poza stronami: SEO, Wizytówkę Google, projekt logo oraz automatyzacje powtarzalnych zadań. Wszystko od jednej osoby." } }
+        ]
+      }
+    ]
   }
   </script>
 </body>
