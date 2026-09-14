@@ -188,6 +188,7 @@
   .work:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
   .work .thumb{height:158px;overflow:hidden;position:relative;background:var(--bg-alt);border-bottom:1px solid var(--border)}
   .work .thumb .wip{position:absolute;top:10px;left:10px;z-index:2;background:#f59e0b;color:#3a2600;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:4px 9px;border-radius:7px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .work .thumb .app-badge{position:absolute;top:10px;left:10px;z-index:2;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:4px 9px;border-radius:7px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
   .work .thumb .seo{position:absolute;bottom:10px;left:10px;z-index:2;display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#2be06f,#12a150);color:#04310f;font-size:11px;font-weight:800;letter-spacing:.02em;padding:5px 11px;border-radius:999px;white-space:nowrap;animation:seoGlow 2.2s ease-in-out infinite}
   .work .thumb .seo::before{content:"✓";font-size:12px;font-weight:900}
   @keyframes seoGlow{0%,100%{box-shadow:0 0 7px 1px rgba(43,224,111,.5),0 2px 8px rgba(0,0,0,.28)}50%{box-shadow:0 0 20px 5px rgba(43,224,111,.92),0 2px 8px rgba(0,0,0,.28)}}
@@ -215,6 +216,18 @@
   .lb-hint{position:fixed;top:20px;left:50%;transform:translateX(-50%);color:#cfd3d9;font-size:12.5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:5px 13px;border-radius:999px;z-index:101;pointer-events:none}
   .lb-close{position:fixed;top:16px;right:20px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(20,24,30,.7);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;z-index:101}
   .lb-close:hover{background:rgba(255,255,255,.2)}
+
+  /* ---------- Galeria zrzutów (aplikacja) ---------- */
+  .gal{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center;background:rgba(10,12,16,.93);backdrop-filter:blur(4px)}
+  .gal.open{display:flex}
+  .gal-img{max-height:86vh;max-width:calc(100% - 130px);width:auto;height:auto;border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .gal-close{position:fixed;top:16px;right:20px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(20,24,30,.7);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:111}
+  .gal-nav{position:fixed;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(20,24,30,.7);color:#fff;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:111;transition:background .15s}
+  .gal-nav:hover{background:rgba(255,255,255,.18)}
+  .gal-prev{left:18px}.gal-next{right:18px}
+  .gal-counter{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);color:#cfd3d9;font-size:13.5px;font-weight:600;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:5px 14px;border-radius:999px;z-index:111}
+  @media(max-width:600px){.gal-img{max-width:calc(100% - 84px)}.gal-prev{left:6px}.gal-next{right:6px}.gal-nav{width:44px;height:44px;font-size:22px}}
+  @media (prefers-reduced-motion: reduce){.gal-nav,.gal-close{transition:none}}
 
   /* ---------- O MNIE ---------- */
   .about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;align-items:center}
@@ -579,6 +592,15 @@
           </div>
         </article>
         <article class="work reveal">
+          <div class="thumb zoomable" data-gallery='["shots/worship/g1.jpg","shots/worship/g2.jpg"]'><img src="shots/worship-cover.jpg" alt="Worship Hub — aplikacja dla zespołów uwielbienia" loading="lazy" width="1200" height="630"><span class="app-badge">Aplikacja</span></div>
+          <div class="body">
+            <h3>Worship Hub</h3>
+            <div class="tag">Aplikacja mobilna · PWA</div>
+            <p>Aplikacja dla zespołów uwielbienia — teksty i akordy piosenek na scenie, listy setów, tryb ciemny. Działa też offline.</p>
+            <button class="link as-btn" type="button" data-gallery='["shots/worship/g1.jpg","shots/worship/g2.jpg"]'>Zobacz zrzuty ekranu <span class="ar">→</span></button>
+          </div>
+        </article>
+        <article class="work reveal">
           <div class="thumb zoomable" data-lb="shots/doodle-full.jpg" data-lb-cap="DoodleHouse — strona hodowli Australian Labradoodle (projekt)"><img src="shots/doodle.jpg" alt="DoodleHouse — podgląd projektu strony" loading="lazy" width="780" height="500"></div>
           <div class="body">
             <h3>DoodleHouse</h3>
@@ -852,6 +874,29 @@
         }
       });
     });
+
+    // Galeria zrzutów aplikacji (przewijalna, ze strzałkami)
+    document.addEventListener('DOMContentLoaded', function(){
+      const gal=document.getElementById('gallery'); if(!gal) return;
+      const img=gal.querySelector('.gal-img'), counter=gal.querySelector('.gal-counter');
+      let list=[], idx=0;
+      const render=()=>{ img.src=list[idx]; counter.textContent=(idx+1)+' / '+list.length; };
+      const open=(arr,s)=>{ list=arr; idx=s||0; render(); gal.classList.add('open'); document.body.style.overflow='hidden'; };
+      const close=()=>{ gal.classList.remove('open'); document.body.style.overflow=''; img.src=''; };
+      const next=()=>{ idx=(idx+1)%list.length; render(); };
+      const prev=()=>{ idx=(idx-1+list.length)%list.length; render(); };
+      document.querySelectorAll('[data-gallery]').forEach(el=>el.addEventListener('click',e=>{
+        e.preventDefault();
+        try{ const arr=JSON.parse(el.dataset.gallery); if(arr.length){ open(arr,0); } }catch(_){}
+      }));
+      gal.querySelector('.gal-next').addEventListener('click',e=>{e.stopPropagation();next();});
+      gal.querySelector('.gal-prev').addEventListener('click',e=>{e.stopPropagation();prev();});
+      gal.addEventListener('click',e=>{ if(e.target===gal||e.target.classList.contains('gal-close')) close(); });
+      document.addEventListener('keydown',e=>{ if(!gal.classList.contains('open'))return; if(e.key==='Escape')close(); else if(e.key==='ArrowRight')next(); else if(e.key==='ArrowLeft')prev(); });
+      let sx=null;
+      img.addEventListener('touchstart',e=>{ sx=e.touches[0].clientX; },{passive:true});
+      img.addEventListener('touchend',e=>{ if(sx===null)return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40){ dx<0?next():prev(); } sx=null; },{passive:true});
+    });
   </script>
 
   <!-- Dane strukturalne (Schema.org) -->
@@ -860,6 +905,15 @@
     <span class="lb-hint">↕ Przewiń, aby zobaczyć całą stronę</span>
     <button class="lb-close" type="button" aria-label="Zamknij">×</button>
     <figure><img src="" alt="Podgląd projektu"><figcaption></figcaption></figure>
+  </div>
+
+  <!-- Galeria zrzutów aplikacji -->
+  <div class="gal" id="gallery" role="dialog" aria-modal="true" aria-label="Zrzuty ekranu aplikacji">
+    <button class="gal-close" type="button" aria-label="Zamknij">×</button>
+    <button class="gal-nav gal-prev" type="button" aria-label="Poprzedni">‹</button>
+    <img class="gal-img" src="" alt="Zrzut ekranu aplikacji">
+    <button class="gal-nav gal-next" type="button" aria-label="Następny">›</button>
+    <div class="gal-counter"></div>
   </div>
 
   <script type="application/ld+json">
