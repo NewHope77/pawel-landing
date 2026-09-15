@@ -158,8 +158,10 @@
   }
 
   /* ---------- HERO (nowy, grafika) ---------- */
-  .hero-photo-full{width:100%;display:block}
-  .hero-cta2{background:#182a72;padding:24px 0}
+  .hero-shell{max-width:960px;margin:0 auto;padding:26px 22px 0}
+  .hero-photo-full{width:100%;display:block;border-radius:18px;box-shadow:0 12px 34px rgba(16,24,40,.12)}
+  @media(max-width:600px){.hero-shell{padding:16px 14px 0}.hero-photo-full{border-radius:12px}}
+  .hero-cta2{background:#182a72;padding:22px 0;margin-top:26px}
   .hero-cta2 .container{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
   .btn-sticker{display:inline-flex;align-items:center;gap:10px;background:#ffdd2d;color:#182a72;font-weight:800;font-size:17px;padding:15px 26px;border-radius:15px;border:3px solid #0c1640;box-shadow:5px 5px 0 #0c1640;text-decoration:none;transition:transform .12s,box-shadow .12s}
   .btn-sticker:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #0c1640}
