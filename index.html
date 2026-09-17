@@ -553,6 +553,9 @@
   }
   :root[data-theme="dark"] header.nav{background:rgba(16,21,29,.82);border-bottom-color:#232c39}
   :root[data-theme="dark"] .hero2{background:#0d131b}
+  /* dzień -> noc: przyciemnienie tego samego zdjęcia (twarz bez zmian) + światło lampy */
+  :root[data-theme="dark"] .hero2 .hero-bg{filter:brightness(.6) contrast(1.08) saturate(.85) hue-rotate(-4deg)}
+  :root[data-theme="dark"] .hero2 .hero-stage::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(60% 55% at 15% 82%, rgba(255,170,70,.34), rgba(255,170,70,.10) 40%, transparent 62%), radial-gradient(90% 80% at 82% 42%, rgba(120,150,255,.10), transparent 55%), linear-gradient(180deg, rgba(8,12,22,.42), rgba(8,12,22,.18) 40%, rgba(8,12,22,.5))}
   :root[data-theme="dark"] .hero2 .hero-copy{background:linear-gradient(100deg,rgba(12,17,25,.92),rgba(12,17,25,.66) 72%,rgba(12,17,25,0))}
   :root[data-theme="dark"] .hero2 .h-sub{color:#d7deea}
   :root[data-theme="dark"] .hero2 .h-checks li{color:#e7ecf4}
@@ -615,8 +618,7 @@
   <!-- ===== HERO v2 (grafika + copy) ===== -->
   <section class="hero2">
     <div class="hero-stage">
-    <img class="hero-bg" id="heroImg" data-light="shots/hero.jpg" data-dark="shots/hero-dark.jpg" width="1672" height="846" alt="Strona internetowa w 2 dni — Nie zdążę? Gratis! — Paweł Stelmakh" fetchpriority="high">
-    <script>(function(){var i=document.getElementById('heroImg');i.src=document.documentElement.getAttribute('data-theme')==='dark'?i.dataset.dark:i.dataset.light;})();</script>
+    <img class="hero-bg" id="heroImg" src="shots/hero.jpg" width="1672" height="846" alt="Strona internetowa w 2 dni — Nie zdążę? Gratis! — Paweł Stelmakh" fetchpriority="high">
     <div class="hero-copy">
       <p class="h-sub">Szybko. Profesjonalnie. Bez stresu. Nowoczesna strona, która działa i przyciąga klientów.</p>
       <div class="h-actions">
@@ -1092,7 +1094,6 @@
       const meta = document.querySelector('meta[name="theme-color"]');
       function apply(theme){
         root.setAttribute('data-theme', theme);
-        if(heroImg) heroImg.src = theme==='dark' ? heroImg.dataset.dark : heroImg.dataset.light;
         if(meta) meta.setAttribute('content', theme==='dark' ? '#0d131b' : '#ffffff');
         if(btn) btn.setAttribute('aria-pressed', theme==='dark' ? 'true' : 'false');
       }
