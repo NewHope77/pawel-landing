@@ -408,10 +408,12 @@
   @keyframes marquee{to{transform:translateX(-50%)}}
 
   /* ---------- Parallax blobs (tło) ---------- */
-  .blob{position:fixed;border-radius:50%;filter:blur(60px);z-index:-2;pointer-events:none;opacity:.5;will-change:transform}
-  .blob.b1{width:420px;height:420px;background:rgba(24,42,114,.18);top:-80px;right:-60px}
-  .blob.b2{width:360px;height:360px;background:rgba(59,130,246,.16);top:40%;left:-120px}
-  .blob.b3{width:300px;height:300px;background:rgba(139,92,246,.14);bottom:8%;right:-40px}
+  .blob{position:fixed;border-radius:50%;filter:blur(60px);z-index:-2;pointer-events:none;opacity:.5;will-change:transform,translate}
+  .blob.b1{width:420px;height:420px;background:rgba(24,42,114,.18);top:-80px;right:-60px;animation:blobA 24s ease-in-out infinite}
+  .blob.b2{width:360px;height:360px;background:rgba(59,130,246,.16);top:40%;left:-120px;animation:blobB 30s ease-in-out infinite}
+  .blob.b3{width:300px;height:300px;background:rgba(139,92,246,.14);bottom:8%;right:-40px;animation:blobA 27s ease-in-out infinite}
+  @keyframes blobA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,50px) scale(1.15)}}
+  @keyframes blobB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-46px,-38px) scale(1.12)}}
 
   @media (prefers-reduced-motion: reduce){
     .marquee-track{animation:none}
@@ -634,14 +636,17 @@
     .steps .st-grid::before{content:"";position:absolute;top:23px;left:14%;right:14%;height:2px;background:linear-gradient(90deg,transparent,var(--ring) 18%,var(--ring) 82%,transparent);z-index:0}
   }
 
-  /* dekoracyjne poświaty w sekcjach (głębia) */
-  #cennik,.features,.steps,#uslugi,#faq{position:relative;isolation:isolate}
-  #cennik::before,.features::before,.steps::before,#uslugi::before{content:"";position:absolute;pointer-events:none;z-index:0;width:560px;height:560px;border-radius:50%;filter:blur(90px);background:var(--grad)}
-  #cennik::before{top:-160px;right:-120px;opacity:.10}
-  .features::before{top:-180px;left:-140px;opacity:.08}
-  #uslugi::before{bottom:-180px;right:-120px;opacity:.08}
-  .steps::before{bottom:-180px;left:-100px;opacity:.08}
+  /* dekoracyjne poświaty w sekcjach (głębia) — overflow-x:clip, żeby nie było poziomego przesuwania */
+  #cennik,.features,.steps,#uslugi,#faq{position:relative;isolation:isolate;overflow-x:clip}
+  #cennik::before,.features::before,.steps::before,#uslugi::before{content:"";position:absolute;pointer-events:none;z-index:0;width:560px;height:560px;border-radius:50%;filter:blur(90px);background:var(--grad);will-change:transform}
+  #cennik::before{top:-160px;right:-120px;opacity:.10;animation:orbA 17s ease-in-out infinite}
+  .features::before{top:-180px;left:-140px;opacity:.08;animation:orbB 21s ease-in-out infinite}
+  #uslugi::before{bottom:-180px;right:-120px;opacity:.08;animation:orbA 24s ease-in-out infinite}
+  .steps::before{bottom:-180px;left:-100px;opacity:.08;animation:orbB 19s ease-in-out infinite}
   #cennik>.container,.features .fgrid,.steps>.container,#uslugi>.container,#faq>.container{position:relative;z-index:1}
+  @keyframes orbA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-34px) scale(1.12)}}
+  @keyframes orbB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-32px,28px) scale(1.1)}}
+  @media (prefers-reduced-motion: reduce){#cennik::before,.features::before,.steps::before,#uslugi::before{animation:none}}
 
   /* realizacje: podkreślenie linku akcentem */
   .work .link{color:#1e5bff}
@@ -1221,7 +1226,7 @@
         if(ticking) return; ticking = true;
         requestAnimationFrame(()=>{
           const y = window.scrollY;
-          blobs.forEach(b=>{ b.style.transform = `translateY(${y * (+b.dataset.speed)}px)`; });
+          blobs.forEach(b=>{ b.style.translate = `0 ${y * (+b.dataset.speed)}px`; });
           ticking = false;
         });
       }, {passive:true});
