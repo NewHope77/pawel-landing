@@ -1,4 +1,31 @@
+# pawelsweb.pl — Paweł Stelmakh, strony internetowe / SEO / GEO
 User-agent: *
+Allow: /
+
+# AI / wyszukiwarki generatywne (GEO) — mile widziane
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: CCBot
 Allow: /
 
 Sitemap: https://pawelsweb.pl/sitemap.xml
