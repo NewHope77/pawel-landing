@@ -83,14 +83,14 @@
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
   .container{max-width:var(--max);margin:0 auto;padding:0 22px}
-  section{padding:92px 0}
+  section{padding:clamp(78px,9vw,120px) 0}
 
   .eyebrow{
     display:inline-block;font-size:13px;font-weight:600;letter-spacing:.14em;
     text-transform:uppercase;color:var(--muted);margin-bottom:14px;
   }
-  h2.title{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.15}
-  .lead{color:var(--ink-soft);font-size:17px;max-width:620px;margin-top:14px}
+  h2.title{font-size:clamp(30px,4.4vw,46px);font-weight:800;letter-spacing:-.025em;line-height:1.1}
+  .lead{color:var(--ink-soft);font-size:18px;max-width:640px;margin-top:16px}
 
   /* ---------- NAV ---------- */
   header.nav{
@@ -117,6 +117,13 @@
   }
   .nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(24,42,114,.35)}
   @media(max-width:760px){.nav-links{display:none}}
+  @media(max-width:430px){
+    .brand{font-size:20px}
+    .nav-right{gap:9px}
+    .nav-cta{font-size:0;gap:0;padding:0;width:42px;height:42px;border-radius:50%;justify-content:center}
+    .nav-cta svg{width:19px;height:19px}
+    .theme-toggle{width:38px;height:38px}
+  }
 
   /* ---------- HERO ---------- */
   .hero{padding:96px 0 84px;position:relative;overflow:hidden}
@@ -202,8 +209,24 @@
   .card ul li{font-size:12.5px;color:var(--muted);background:var(--bg-alt);border:1px solid var(--border);padding:4px 10px;border-radius:999px}
 
   /* ---------- REALIZACJE ---------- */
-  .work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:46px}
-  @media(max-width:900px){.work-grid{grid-template-columns:1fr}}
+  /* ---- REALIZACJE: pozioma karuzela (snap + drag) ---- */
+  .rail-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+  .rail-nav{display:flex;gap:10px;flex:none}
+  .rail-btn{width:48px;height:48px;border-radius:50%;border:1px solid var(--border);background:var(--bg);color:var(--ink);font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s ease,border-color .15s ease,background .15s ease,opacity .15s ease}
+  .rail-btn:hover{transform:translateY(-2px);border-color:#1e5bff;color:#1e5bff}
+  .rail-btn:disabled{opacity:.3;cursor:default;transform:none}
+  .rail-hint{display:none}
+  .work-grid{display:flex;gap:22px;margin-top:34px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab;
+    padding:12px max(22px,calc((100vw - var(--max))/2 + 22px)) 8px;
+    scroll-padding-inline:max(22px,calc((100vw - var(--max))/2 + 22px))}
+  .work-grid::-webkit-scrollbar{display:none}
+  .work-grid.grabbing{cursor:grabbing;scroll-snap-type:none}
+  .work-grid.grabbing .work{pointer-events:none}
+  .work-grid .work{flex:0 0 clamp(268px,80vw,340px);scroll-snap-align:start;opacity:1;transform:none;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+  .rail-progress{max-width:var(--max);margin:26px auto 0;padding:0 22px}
+  .rail-progress i{display:block;height:4px;border-radius:999px;background:var(--border);position:relative;overflow:hidden}
+  .rail-progress i span{position:absolute;left:0;top:0;height:100%;width:30%;border-radius:999px;background:var(--grad);transition:transform .12s linear,width .2s ease}
+  @media(max-width:620px){.rail-nav{display:none}.rail-hint{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:13px;font-weight:600;color:var(--muted)}}
   .work{
     border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
     background:var(--bg);box-shadow:var(--shadow-sm);
@@ -743,11 +766,20 @@
 
   <section id="realizacje">
     <div class="container">
-      <span class="eyebrow reveal">Portfolio</span>
-      <h2 class="title reveal">Wybrane <span class="gr">realizacje</span></h2>
-      <p class="lead reveal">Kilka projektów, które stworzyłem — od strony wizytówki po pełne wdrożenie z SEO.</p>
-
-      <div class="work-grid">
+      <div class="rail-top">
+        <div>
+          <span class="eyebrow reveal">Portfolio</span>
+          <h2 class="title reveal">Wybrane <span class="gr">realizacje</span></h2>
+          <p class="lead reveal">Kilka projektów, które stworzyłem — od strony wizytówki po pełne wdrożenie z SEO.</p>
+          <span class="rail-hint">← przesuń palcem, aby zobaczyć więcej →</span>
+        </div>
+        <div class="rail-nav reveal" aria-hidden="true">
+          <button class="rail-btn" type="button" data-rail="prev" aria-label="Poprzednie realizacje">←</button>
+          <button class="rail-btn" type="button" data-rail="next" aria-label="Następne realizacje">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="work-grid" id="workRail">
         <article class="work reveal">
           <div class="thumb"><img src="shots/eucf.jpg" alt="EUCF — European-Ukrainian Christian Forum — podgląd strony" loading="lazy" width="780" height="500"><span class="done">Zrealizowany</span></div>
           <div class="body">
@@ -911,7 +943,7 @@
           </div>
         </article>
       </div>
-    </div>
+    <div class="rail-progress"><i><span id="railProg"></span></i></div>
   </section>
 
   <!-- ===== USŁUGI ===== -->
@@ -1240,6 +1272,44 @@
       entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
     },{threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Karuzela realizacji (poziomy scroll: strzałki, przeciąganie, pasek postępu)
+    (function(){
+      const rail = document.getElementById('workRail');
+      if(!rail) return;
+      const prevB = document.querySelector('[data-rail="prev"]');
+      const nextB = document.querySelector('[data-rail="next"]');
+      const prog  = document.getElementById('railProg');
+      let raf = 0;
+      function update(){
+        raf = 0;
+        const max = rail.scrollWidth - rail.clientWidth;
+        const x = rail.scrollLeft;
+        if(prevB) prevB.disabled = x <= 2;
+        if(nextB) nextB.disabled = x >= max - 2;
+        if(prog){
+          const track = prog.parentElement;
+          const w = Math.max(12, Math.min(100, rail.clientWidth / rail.scrollWidth * 100));
+          const ratio = max > 0 ? x / max : 0;
+          const tw = track.clientWidth;
+          prog.style.width = w + '%';
+          prog.style.transform = 'translateX(' + (ratio * tw * (1 - w/100)) + 'px)';
+        }
+      }
+      function onScroll(){ if(!raf) raf = requestAnimationFrame(update); }
+      rail.addEventListener('scroll', onScroll, {passive:true});
+      window.addEventListener('resize', update);
+      const page = () => Math.max(260, rail.clientWidth * 0.85);
+      prevB && prevB.addEventListener('click', ()=> rail.scrollBy({left:-page(), behavior:'smooth'}));
+      nextB && nextB.addEventListener('click', ()=> rail.scrollBy({left: page(), behavior:'smooth'}));
+      // przeciąganie myszą (desktop)
+      let down=false, sx=0, sl=0, moved=false;
+      rail.addEventListener('pointerdown', e=>{ if(e.pointerType==='mouse'){ down=true; sx=e.clientX; sl=rail.scrollLeft; moved=false; rail.classList.add('grabbing'); }});
+      window.addEventListener('pointermove', e=>{ if(!down) return; const dx=e.clientX-sx; if(Math.abs(dx)>5) moved=true; rail.scrollLeft = sl - dx; });
+      window.addEventListener('pointerup', ()=>{ if(down){ down=false; rail.classList.remove('grabbing'); }});
+      rail.addEventListener('click', e=>{ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
+      update();
+    })();
 
     // liczniki (count-up) w statystykach
     function runCount(el){
