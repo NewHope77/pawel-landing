@@ -12,7 +12,7 @@
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <script>
-  (function(){var d=document.documentElement;d.classList.add('js');try{var q=(location.search.match(/[?&]theme=(light|dark)/)||[])[1];var t=q||localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';d.setAttribute('data-theme',t)}catch(e){d.setAttribute('data-theme','light')}})();
+  (function(){var d=document.documentElement;d.classList.add('js');try{var q=(location.search.match(/[?&]theme=(light|dark)/)||[])[1];var t=q||localStorage.getItem('pw-theme')||'dark';d.setAttribute('data-theme',t)}catch(e){d.setAttribute('data-theme','dark')}})();
 </script>
 <style>
 :root{
@@ -28,9 +28,9 @@
   color-scheme:light;
 }
 [data-theme="dark"]{
-  --bg:#0a0f1c; --bg-2:#0e1424; --paper:#131b2f; --ink:#eef2fb; --text:#b6c0d6; --muted:#8792aa;
-  --line:rgba(255,255,255,.12); --line-2:rgba(255,255,255,.06);
-  --blue-ink:#9db8ff; --navy:#05080f; --navy-2:#111a31;
+  --bg:#0a0a0a; --bg-2:#111111; --paper:#181818; --ink:#f5f5f4; --text:#b5b5b0; --muted:#86868b;
+  --line:rgba(255,255,255,.12); --line-2:rgba(255,255,255,.07);
+  --blue-ink:#8fb0ff; --navy:#000000; --navy-2:#161616; --navy-line:rgba(255,255,255,.1); --on-navy-2:#a3a3a3;
   --sh:0 1px 2px rgba(0,0,0,.3),0 18px 40px -18px rgba(0,0,0,.7);
   --sh-l:0 44px 90px -34px rgba(0,0,0,.85);
   color-scheme:dark;
@@ -71,7 +71,7 @@ section{position:relative;padding:clamp(84px,10vw,140px) 0}
 /* nav */
 .nav{position:sticky;top:0;z-index:50;isolation:isolate}
 .nav::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(246,246,241,.74);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--line-2)}
-[data-theme="dark"] .nav::before{background:rgba(10,15,28,.74)}
+[data-theme="dark"] .nav::before{background:rgba(10,10,10,.72)}
 .is-scrolling .nav::before{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bg)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
 .brand{display:flex;align-items:center;gap:9px;font-weight:500;font-size:21px;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
@@ -870,7 +870,7 @@ section{position:relative;padding:clamp(84px,10vw,140px) 0}
 
   // motyw
   const tt=document.getElementById('themeToggle');
-  tt.addEventListener('click',()=>{const n=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}});
+  tt.addEventListener('click',()=>{const n=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('pw-theme',n)}catch(e){}});
 
   // szkło nawigacji śpi podczas przewijania
   let st; addEventListener('scroll',()=>{root.classList.add('is-scrolling');clearTimeout(st);st=setTimeout(()=>root.classList.remove('is-scrolling'),150)},{passive:true});

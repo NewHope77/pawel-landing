@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""Build v2.html (new design) from the content of the current index.html."""
+import re, html, json, pathlib
+
+ROOT = pathlib.Path('/Users/pauls/claude-projects/personal-page')
+SRC = (ROOT / 'index.html').read_text(encoding='utf-8')
+TPL = pathlib.Path(__file__).with_name('v2_template.html').read_text(encoding='utf-8')
+
+def strip(s): return html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', s)).strip())
+def one(pat, s, default=''):
+    m = re.search(pat, s, re.S); return m.group(1) if m else default
+
+# ---------- realizacje ----------
+works = []
+for a in re.findall(r'<article class="work[^"]*">(.*?)</article>', SRC, re.S):
+    thumb = one(r'(<div class="thumb[^>]*>)', a)
+    w = {
+        'img': one(r'<img src="([^"]+)"', a),
+        'alt': one(r'<img[^>]*alt="([^"]*)"', a),
+        'badge_cls': one(r'<span class="(done|seo|wip|app-badge)">', a),
+        'badge': one(r'<span class="(?:done|seo|wip|app-badge)">([^<]*)</span>', a),
+        'title': strip(one(r'<h3>(.*?)</h3>', a)),
+        'tag': strip(one(r'<div class="tag">(.*?)</div>', a)),
+        'desc': strip(one(r'<p>(.*?)</p>', a)),
+        'href': one(r'<a class="link" href="([^"]+)"', a),
+        'link_txt': strip(one(r'class="link[^"]*"[^>]*>(.*?)<span class="ar">', a)),
+        'lb': one(r'data-lb="([^"]+)"', thumb), 'lb_cap': one(r'data-lb-cap="([^"]*)"', thumb),
+        'gallery': one(r"data-gallery='([^']+)'", thumb),
+    }
+    works.append(w)
+
+BADGE = {'done': ('ok', '✓ Zrealizowany'), 'seo': ('seo', '✓ SEO wykonane'), 'wip': ('wip', 'W trakcie'), 'app-badge': ('app', 'Aplikacja')}
+def domain(u):
+    d = re.sub(r'^https?://', '', u).rstrip('/')
+    return d.replace('?lang=pl', '')
+cards = []
+for i, w in enumerate(works):
+    cls, label = BADGE.get(w['badge_cls'], ('', ''))
+    if w['badge_cls'] == 'seo': label = '✓ SEO wykonane'
+    badge = f'<span class="w-badge {cls}">{html.escape(label)}</span>' if label else ''
+    if w['href']:
+        bar = domain(w['href'])
+        act = f'<a class="w-link" href="{w["href"]}" target="_blank" rel="noopener">{html.escape(w["link_txt"] or "Zobacz stronę")} <span aria-hidden="true">↗</span></a>'
+        open_attr = ''
+    elif w['gallery']:
+        bar = 'aplikacja · zrzuty ekranu'
+        act = f'<button class="w-link" type="button" data-gallery=\'{w["gallery"]}\'>{html.escape(w["link_txt"])} <span aria-hidden="true">→</span></button>'
+        open_attr = f' data-gallery=\'{w["gallery"]}\''
+    else:
+        bar = 'podgląd projektu'
+        cap = html.escape(w['lb_cap'], quote=True)
+        act = f'<button class="w-link" type="button" data-lb="{w["lb"]}" data-lb-cap="{cap}">{html.escape(w["link_txt"])} <span aria-hidden="true">→</span></button>'
+        open_attr = f' data-lb="{w["lb"]}" data-lb-cap="{cap}"'
+    cards.append(f'''      <article class="w-card">
+        <div class="w-bar"><i></i><i></i><i></i><span>{html.escape(bar)}</span></div>
+        <div class="w-shot{' zoom' if open_attr else ''}"{open_attr}><img src="{w['img']}" alt="{html.escape(w['alt'], quote=True)}" loading="lazy" width="780" height="500">{badge}</div>
+        <div class="w-body">
+          <h3>{html.escape(w['title'])}</h3>
+          <div class="w-tag">{html.escape(w['tag'])}</div>
+          <p>{html.escape(w['desc'])}</p>
+          {act}
+        </div>
+      </article>''')
+
+# ---------- cennik ----------
+prices = []
+for blk in re.findall(r'<div class="price-card[^"]*">(.*?)\n        </div>\n', SRC, re.S):
+    prices.append({
+        'svg': one(r'<div class="pic">(<svg.*?</svg>)</div>', blk),
+        'name': strip(one(r'<h3>(.*?)</h3>', blk)),
+        'desc': strip(one(r'<p>(.*?)</p>', blk)),
+        'od': '<span class="od">od</span>' in blk,
+        'v': one(r'<span class="v">([^<]+)</span>', blk),
+        'popular': 'price-hot' in blk,
+    })
+fixed = [p for p in prices if not p['od']]
+ind = [p for p in prices if p['od']]
+def rline(p):
+    pop = ' pop' if p['popular'] else ''
+    star = '<span class="r-star">★ najczęściej wybierane</span>' if p['popular'] else ''
+    od = '<em>od</em> ' if p['od'] else ''
+    return f'''          <li class="r-item{pop}"><span class="r-ic">{p['svg']}</span><div class="r-main"><div class="r-row"><span class="r-name">{html.escape(p['name'])}</span><span class="r-dots"></span><span class="r-price">{od}{p['v']} zł</span></div><div class="r-desc">{html.escape(p['desc'])}{star}</div></div></li>'''
+popular = next(p for p in prices if p['popular'])
+
+# ---------- usługi ----------
+usl = re.search(r'<section id="uslugi">(.*?)</section>', SRC, re.S).group(1)
+services = []
+for c in re.findall(r'<div class="card reveal">(.*?)\n        </div>\n', usl, re.S):
+    services.append({'t': strip(one(r'<h3>(.*?)</h3>', c)), 'p': strip(one(r'<p>(.*?)</p>', c)), 'li': [strip(x) for x in re.findall(r'<li>(.*?)</li>', c)]})
+srows = []
+for i, s in enumerate(services, 1):
+    pills = ''.join(f'<span>{html.escape(x)}</span>' for x in s['li'])
+    srows.append(f'''        <li class="s-row" data-reveal style="--i:{i}"><span class="s-num">{i:02d}</span><h3>{html.escape(s['t'])}</h3><p>{html.escape(s['p'])}</p><div class="s-pills">{pills}</div></li>''')
+
+# ---------- FAQ ----------
+faq = re.search(r'<section id="faq">(.*?)</section>', SRC, re.S).group(1)
+faqs = []
+for q, a in re.findall(r'<summary>(.*?)</summary>\s*<div class="faq-a">(.*?)</div>', faq, re.S):
+    faqs.append(f'''          <details class="q"><summary>{q}<span class="q-ic" aria-hidden="true"></span></summary><div class="q-a">{a}</div></details>''')
+
+# ---------- blog ----------
+blog = re.search(r'<section id="blog">(.*?)</section>', SRC, re.S).group(1)
+posts = []
+for href, img, alt, cat, h3 in re.findall(r'<a class="hb-card reveal" href="([^"]+)">\s*<img src="([^"]+)" alt="([^"]*)"[^>]*>\s*<div class="b"><span class="cat">([^<]*)</span><h3>(.*?)</h3>', blog, re.S):
+    posts.append(f'''        <a class="post" href="{href}" data-reveal><div class="post-img"><img src="{img}" alt="{html.escape(alt, quote=True)}" loading="lazy" width="1200" height="630"></div><span class="post-cat">{cat}</span><h3>{h3}</h3><span class="post-more">Czytaj <span aria-hidden="true">→</span></span></a>''')
+
+lbcss = one(r'(/\* -+ Lightbox.*?)/\* -+ O MNIE', SRC)
+assert lbcss, 'lightbox css not found'
+out = (TPL
+       .replace('%%LBCSS%%', lbcss)
+       .replace('%%WORKS%%', '\n'.join(cards))
+       .replace('%%WORKS_N%%', str(len(works)))
+       .replace('%%FIXED%%', '\n'.join(rline(p) for p in fixed))
+       .replace('%%IND%%', '\n'.join(rline(p) for p in ind))
+       .replace('%%POP_NAME%%', html.escape(popular['name']))
+       .replace('%%POP_DESC%%', html.escape(popular['desc']))
+       .replace('%%POP_V%%', popular['v'])
+       .replace('%%SERVICES%%', '\n'.join(srows))
+       .replace('%%FAQ%%', '\n'.join(faqs))
+       .replace('%%POSTS%%', '\n'.join(posts)))
+left = re.findall(r'%%[A-Z_]+%%', out)
+assert not left, left
+(ROOT / 'v2.html').write_text(out, encoding='utf-8')
+print(f'v2.html: {len(works)} works, {len(fixed)}+{len(ind)} prices, {len(services)} services, {len(faqs)} faq, {len(posts)} posts')
