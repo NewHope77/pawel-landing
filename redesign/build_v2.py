@@ -29,37 +29,23 @@ for a in re.findall(r'<article class="work[^"]*">(.*?)</article>', SRC, re.S):
     }
     works.append(w)
 
-BADGE = {'done': ('ok', '✓ Zrealizowany'), 'seo': ('seo', '✓ SEO wykonane'), 'wip': ('wip', 'W trakcie'), 'app-badge': ('app', 'Aplikacja')}
-def domain(u):
-    d = re.sub(r'^https?://', '', u).rstrip('/')
-    return d.replace('?lang=pl', '')
+FLAG = {'wip': 'W trakcie', 'app-badge': 'Aplikacja', 'seo': 'SEO'}
 cards = []
 for i, w in enumerate(works):
-    cls, label = BADGE.get(w['badge_cls'], ('', ''))
-    if w['badge_cls'] == 'seo': label = '✓ SEO wykonane'
-    badge = f'<span class="w-badge {cls}">{html.escape(label)}</span>' if label else ''
+    flag = FLAG.get(w['badge_cls'], '')
+    flag_html = f'<span class="w-flag">{html.escape(flag)}</span>' if flag else ''
+    label = html.escape(f"{w['title']} — {w['desc']}", quote=True)
+    inner = f'<span class="w-img"><img src="{w['img']}" alt="{html.escape(w['alt'], quote=True)}" loading="lazy" width="780" height="500">{flag_html}<span class="w-go" aria-hidden="true">↗</span></span>'
     if w['href']:
-        bar = domain(w['href'])
-        act = f'<a class="w-link" href="{w["href"]}" target="_blank" rel="noopener">{html.escape(w["link_txt"] or "Zobacz stronę")} <span aria-hidden="true">↗</span></a>'
-        open_attr = ''
+        frame = f'<a class="w-frame" href="{w['href']}" target="_blank" rel="noopener" aria-label="{label}" title="{label}">{inner}</a>'
     elif w['gallery']:
-        bar = 'aplikacja · zrzuty ekranu'
-        act = f'<button class="w-link" type="button" data-gallery=\'{w["gallery"]}\'>{html.escape(w["link_txt"])} <span aria-hidden="true">→</span></button>'
-        open_attr = f' data-gallery=\'{w["gallery"]}\''
+        frame = f'<button class="w-frame" type="button" data-gallery=\'{w['gallery']}\' aria-label="{label}" title="{label}">{inner}</button>'
     else:
-        bar = 'podgląd projektu'
         cap = html.escape(w['lb_cap'], quote=True)
-        act = f'<button class="w-link" type="button" data-lb="{w["lb"]}" data-lb-cap="{cap}">{html.escape(w["link_txt"])} <span aria-hidden="true">→</span></button>'
-        open_attr = f' data-lb="{w["lb"]}" data-lb-cap="{cap}"'
+        frame = f'<button class="w-frame" type="button" data-lb="{w['lb']}" data-lb-cap="{cap}" aria-label="{label}" title="{label}">{inner}</button>'
     cards.append(f'''      <article class="w-card">
-        <div class="w-bar"><i></i><i></i><i></i><span>{html.escape(bar)}</span></div>
-        <div class="w-shot{' zoom' if open_attr else ''}"{open_attr}><img src="{w['img']}" alt="{html.escape(w['alt'], quote=True)}" loading="lazy" width="780" height="500">{badge}</div>
-        <div class="w-body">
-          <h3>{html.escape(w['title'])}</h3>
-          <div class="w-tag">{html.escape(w['tag'])}</div>
-          <p>{html.escape(w['desc'])}</p>
-          {act}
-        </div>
+        {frame}
+        <div class="w-cap"><h3>{html.escape(w['title'])}</h3><span>{html.escape(w['tag'])}</span></div>
       </article>''')
 
 # ---------- cennik ----------
@@ -77,9 +63,9 @@ fixed = [p for p in prices if not p['od']]
 ind = [p for p in prices if p['od']]
 def rline(p):
     pop = ' pop' if p['popular'] else ''
-    star = '<span class="r-star">★ najczęściej wybierane</span>' if p['popular'] else ''
-    od = '<em>od</em> ' if p['od'] else ''
-    return f'''          <li class="r-item{pop}"><span class="r-ic">{p['svg']}</span><div class="r-main"><div class="r-row"><span class="r-name">{html.escape(p['name'])}</span><span class="r-dots"></span><span class="r-price">{od}{p['v']} zł</span></div><div class="r-desc">{html.escape(p['desc'])}{star}</div></div></li>'''
+    ok = '<span class="p-ok" aria-label="najczęściej wybierane">✓</span>' if p['popular'] else ''
+    od = '<em>od</em>' if p['od'] else ''
+    return f'''          <li class="p-row{pop}"><span class="p-ic">{p['svg']}</span><span class="p-main"><b>{html.escape(p['name'])}</b><small>{html.escape(p['desc'])}</small></span><span class="p-val">{od}{p['v']} zł</span>{ok}</li>'''
 popular = next(p for p in prices if p['popular'])
 
 # ---------- usługi ----------
