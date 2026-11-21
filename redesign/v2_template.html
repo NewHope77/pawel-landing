@@ -687,47 +687,50 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
 
 
 /* =====================================================================
-   HERO: silhouette deep behind fogged glass · BUTTONS: liquid gradient fill (2026-11-21)
+   BUTTONS: LIQUID GLASS (2026-11-21) — tinted glass, light rims, lens gloss,
+   caustic at the bottom, highlight follows the pointer, springy press
    ===================================================================== */
-.hero{position:relative}
-.hero-fog{position:absolute;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:var(--bg)}
-.hero-fog picture{position:absolute;inset:-4%}
-.hero-fog img{width:100%;height:100%;object-fit:cover;object-position:64% 40%;opacity:.7;transform-origin:62% 45%;animation:fogDrift 28s ease-in-out infinite alternate}
-@keyframes fogDrift{from{transform:scale(1) translate3d(0,0,0)}to{transform:scale(1.06) translate3d(-1.4%,-1%,0)}}
-.hero-fog.is-off img{animation-play-state:paused}
-.hero-fog::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(90deg,rgba(22,19,22,.93) 0%,rgba(22,19,22,.76) 30%,rgba(22,19,22,.2) 60%,rgba(22,19,22,.34) 100%),
-             linear-gradient(180deg,rgba(22,19,22,.62) 0%,rgba(22,19,22,0) 20%,rgba(22,19,22,0) 70%,#161316 100%)}
-[data-theme="light"] .hero-fog img{opacity:.34}
-[data-theme="light"] .hero-fog::after{background:linear-gradient(90deg,rgba(246,241,237,.95) 0%,rgba(246,241,237,.82) 32%,rgba(246,241,237,.34) 64%,rgba(246,241,237,.52) 100%),
-             linear-gradient(180deg,rgba(246,241,237,.6) 0%,rgba(246,241,237,0) 22%,rgba(246,241,237,0) 70%,#f6f1ed 100%)}
-@media(max-width:700px){
-  .hero-fog img{object-position:50% 64%;opacity:.66}
-  .hero-fog::after{background:linear-gradient(180deg,rgba(22,19,22,.88) 0%,rgba(22,19,22,.6) 34%,rgba(22,19,22,.22) 62%,rgba(22,19,22,.5) 88%,#161316 100%)}
-  [data-theme="light"] .hero-fog::after{background:linear-gradient(180deg,rgba(246,241,237,.92) 0%,rgba(246,241,237,.7) 36%,rgba(246,241,237,.3) 64%,#f6f1ed 100%)}
-}
-
-/* buttons: liquid gradient fill flowing inside a glass pill */
-.btn-blue,.btn-yellow,.btn-ink,.wa,.fab{color:#fff;text-shadow:0 1px 2px rgba(120,30,0,.35);
-  background:rgba(255,100,30,.55);border:1px solid rgba(255,206,170,.72);
-  box-shadow:0 18px 40px -16px rgba(255,100,30,.6)}
-.btn-blue::before,.btn-yellow::before,.btn-ink::before,.wa::before,.fab::before{content:"";position:absolute;z-index:-1;inset:auto;left:50%;top:50%;
-  width:max(270%,360px);aspect-ratio:1;border-radius:50%;opacity:.94;pointer-events:none;
-  background:radial-gradient(21% 21% at 31% 37%,rgba(255,164,60,.95),rgba(255,164,60,0) 72%),
-             radial-gradient(20% 20% at 67% 61%,rgba(196,36,0,.92),rgba(196,36,0,0) 72%),
-             radial-gradient(23% 23% at 61% 30%,rgba(255,122,36,.95),rgba(255,122,36,0) 72%),
-             radial-gradient(21% 21% at 37% 69%,rgba(246,82,16,.95),rgba(246,82,16,0) 72%),
-             radial-gradient(16% 16% at 50% 50%,rgba(255,146,50,.9),rgba(255,146,50,0) 72%),
-             conic-gradient(from 20deg,#ff6d29,#ff8a2e,#e8470a,#ff9a3a,#d93d05,#ff7424,#ff6d29);
-  transform:translate(-50%,-50%) rotate(0deg);animation:liquidFlow 8s linear infinite}
-@keyframes liquidFlow{0%{transform:translate(-50%,-50%) rotate(0deg) scale(1)}50%{transform:translate(-50%,-50%) rotate(180deg) scale(1.18)}100%{transform:translate(-50%,-50%) rotate(360deg) scale(1)}}
-.btn-blue::after,.btn-yellow::after,.btn-ink::after,.wa::after,.fab::after{content:"";position:absolute;z-index:-1;inset:0;top:0;left:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;animation:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.24) 0%,rgba(255,255,255,.05) 32%,rgba(255,255,255,0) 48%),radial-gradient(120% 90% at 50% 125%,rgba(110,22,0,.32),rgba(110,22,0,0) 62%);
-  background-repeat:no-repeat;background-size:100% 100%;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.62),inset 0 0 0 1px rgba(255,255,255,.1)}
-.btn-blue:hover,.btn-yellow:hover,.btn-ink:hover,.wa:hover{box-shadow:0 24px 48px -16px rgba(255,100,30,.75)}
-.btn-blue:hover::before,.btn-yellow:hover::before,.btn-ink:hover::before,.wa:hover::before{opacity:1}
-.btn-blue .arr,.btn-yellow .arr,.btn-ink .arr{text-shadow:none}
+.btn-blue,.btn-yellow,.btn-ink,.wa,.fab,.btn-line{--mx:28%;--my:0%;position:relative;isolation:isolate;overflow:hidden;
+  -webkit-backdrop-filter:blur(10px) saturate(190%) brightness(1.06);backdrop-filter:blur(10px) saturate(190%) brightness(1.06);
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,background .35s ease}
+.btn-blue,.btn-yellow,.btn-ink,.wa,.fab{color:#fff;text-shadow:0 1px 1.5px rgba(90,25,0,.35);border:0;
+  background:linear-gradient(180deg,rgba(255,146,84,.78) 0%,rgba(255,104,36,.7) 52%,rgba(238,78,14,.78) 100%);
+  box-shadow:inset 0 1px .5px rgba(255,255,255,.8),inset 0 -1px .5px rgba(255,214,182,.4),
+             inset 2px 4px 7px -4px rgba(255,255,255,.6),inset -3px -5px 9px -5px rgba(255,214,170,.6),
+             inset 0 0 22px rgba(255,120,48,.22),0 12px 30px -12px rgba(255,90,20,.6),0 2px 6px rgba(0,0,0,.22)}
+[data-theme="light"] .btn-blue,[data-theme="light"] .btn-yellow,[data-theme="light"] .btn-ink,[data-theme="light"] .wa,[data-theme="light"] .fab{
+  background:linear-gradient(180deg,rgba(255,138,72,.86) 0%,rgba(255,100,32,.8) 52%,rgba(232,74,12,.86) 100%)}
+.btn-line{color:var(--ink);border:0;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03) 55%,rgba(255,255,255,.07));
+  box-shadow:inset 0 1px .5px rgba(255,255,255,.55),inset 0 -1px .5px rgba(255,255,255,.18),
+             inset 2px 4px 7px -4px rgba(255,255,255,.3),inset -3px -5px 9px -5px rgba(255,255,255,.2),0 10px 26px -14px rgba(0,0,0,.7)}
+[data-theme="light"] .btn-line{background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.42) 55%,rgba(255,255,255,.6));
+  box-shadow:inset 0 1px .5px #fff,inset 0 -1px .5px rgba(255,255,255,.7),inset 2px 4px 7px -4px #fff,0 10px 26px -14px rgba(69,48,39,.45),0 0 0 1px rgba(69,48,39,.08)}
+/* bright rim: thin gradient edge, strongest top-left and bottom-right like light bending through a drop */
+.btn-blue::before,.btn-yellow::before,.btn-ink::before,.wa::before,.fab::before,.btn-line::before{content:"";position:absolute;z-index:1;inset:0;left:0;top:0;width:auto;height:auto;aspect-ratio:auto;
+  border-radius:inherit;padding:1px;opacity:1;pointer-events:none;animation:none;transform:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.12) 34%,rgba(255,255,255,0) 52%,rgba(255,255,255,.1) 68%,rgba(255,236,218,.75));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+/* lens gloss on top, caustic at the bottom, specular spot that follows the pointer */
+.btn-blue::after,.btn-yellow::after,.btn-ink::after,.wa::after,.fab::after,.btn-line::after{content:"";position:absolute;z-index:-1;inset:0;left:0;top:0;width:100%;height:100%;
+  border-radius:inherit;pointer-events:none;animation:none;box-shadow:none;background-repeat:no-repeat;background-size:100% 100%;
+  background:radial-gradient(90px 46px at var(--mx) var(--my),rgba(255,255,255,.5),rgba(255,255,255,0) 70%),
+             radial-gradient(120% 62% at 50% -14%,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),
+             radial-gradient(80% 56% at 50% 122%,rgba(255,222,190,.5),rgba(255,222,190,0) 62%);
+  transition:opacity .3s}
+.btn-line::after{background:radial-gradient(90px 46px at var(--mx) var(--my),rgba(255,255,255,.3),rgba(255,255,255,0) 70%),
+             radial-gradient(120% 62% at 50% -14%,rgba(255,255,255,.16),rgba(255,255,255,0) 58%),
+             radial-gradient(80% 56% at 50% 122%,rgba(255,180,140,.16),rgba(255,180,140,0) 62%)}
+.btn-blue:hover,.btn-yellow:hover,.btn-ink:hover,.wa:hover,.btn-line:hover{transform:translateY(-2px) scale(1.02)}
+.btn-blue:hover,.btn-yellow:hover,.btn-ink:hover,.wa:hover{box-shadow:inset 0 1px .5px rgba(255,255,255,.85),inset 0 -1px .5px rgba(255,214,182,.5),
+             inset 2px 4px 7px -4px rgba(255,255,255,.7),inset -3px -5px 9px -5px rgba(255,214,170,.7),
+             inset 0 0 26px rgba(255,140,60,.3),0 18px 40px -12px rgba(255,90,20,.75),0 2px 6px rgba(0,0,0,.22)}
+.btn-blue:active,.btn-yellow:active,.btn-ink:active,.wa:active,.btn-line:active,.fab:active{transform:scale(.96);transition-duration:.15s}
+.fab:hover{transform:scale(1.06)}
+/* the arrow sits in a clear glass droplet */
+.btn-blue .arr,.btn-yellow .arr,.btn-ink .arr{text-shadow:none;color:#e9520f;background:radial-gradient(circle at 34% 28%,#fff 0%,#fff6f0 46%,#ffe2cf 100%);
+  box-shadow:inset 0 -2px 4px rgba(255,120,60,.28),inset 0 1px 1px #fff,0 3px 8px -2px rgba(110,30,0,.35)}
+.btn-line .arr{background:rgba(255,255,255,.12);box-shadow:inset 0 1px .5px rgba(255,255,255,.6)}
+@media (hover:none){.btn-blue:hover,.btn-yellow:hover,.btn-ink:hover,.wa:hover,.btn-line:hover{transform:none}}
 
 @media (prefers-reduced-motion: reduce){.btn-blue::before,.btn-yellow::before,.btn-ink::before,.wa::before,.fab::before,.btn-blue::after,.btn-yellow::after,.btn-ink::after,.wa::after,.fab::after{animation:none}}
 
@@ -761,7 +764,6 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
 
 <main>
 <section class="hero" id="hero">
-  <div class="hero-fog" aria-hidden="true"><picture><source media="(max-width:700px)" srcset="shots/hero-fog-m.jpg" width="960" height="1694"><img src="shots/hero-fog.jpg" alt="" width="2048" height="1476" decoding="async"></picture></div>
   <div class="wrap">
     <span class="eyebrow live" data-anim><span class="live-dot"></span>Wolny na nowe projekty · odpowiadam w kilka godzin</span>
     <h1><span class="l1"><span class="w" style="--k:0">Strona</span> <span class="w" style="--k:1">internetowa</span></span><span class="l2"><em class="w" style="--k:2">w</em> <span class="mark w" style="--k:3"><span class="mk" aria-hidden="true"><i></i></span>2&nbsp;dni.</span></span></h1>
@@ -985,7 +987,7 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
 
   // nieskończone animacje śpią poza ekranem
   const po=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('is-off',!e.isIntersecting)),{rootMargin:'120px'});
-  document.querySelectorAll('.stage,.bands,.nav .caret,.ph .chip,.btn-blue,.btn-yellow,.btn-ink,.mark,.wa,.fab,.hero-fog').forEach(el=>po.observe(el));
+  document.querySelectorAll('.stage,.bands,.nav .caret,.ph .chip,.btn-blue,.btn-yellow,.btn-ink,.mark,.wa,.fab').forEach(el=>po.observe(el));
 
   // przeglądarka w hero: prawdziwe realizacje przewijają się same
   (function(){
@@ -1059,6 +1061,12 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
   gImg.addEventListener('touchend',e=>{if(gx===null)return;const dx=e.changedTouches[0].clientX-gx;if(Math.abs(dx)>40)dx<0?gN():gP();gx=null},{passive:true});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(lb.classList.contains('open'))lbClose();if(gal.classList.contains('open'))gC()}else if(gal.classList.contains('open')){if(e.key==='ArrowRight')gN();else if(e.key==='ArrowLeft')gP()}});
 })();
+</script>
+<script>
+/* liquid glass: the specular spot follows the pointer over a button */
+(()=>{const sel='.btn-blue,.btn-yellow,.btn-ink,.btn-line,.wa,.fab';
+document.addEventListener('pointermove',e=>{const b=e.target.closest&&e.target.closest(sel);if(!b)return;const r=b.getBoundingClientRect();b.style.setProperty('--mx',(e.clientX-r.left)+'px');b.style.setProperty('--my',(e.clientY-r.top)+'px')},{passive:true});
+document.addEventListener('pointerout',e=>{const b=e.target.closest&&e.target.closest(sel);if(b&&!b.contains(e.relatedTarget)){b.style.removeProperty('--mx');b.style.removeProperty('--my')}},{passive:true});})();
 </script>
 </body>
 </html>
