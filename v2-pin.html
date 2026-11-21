@@ -782,6 +782,17 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
 .hero-clean .hero-cta{justify-content:center;margin-top:clamp(28px,3vw,40px)}
 @media(max-width:700px){.hero-clean{min-height:min(82svh,760px)}}
 
+/* ===== theme switch: light grows from the toggle / shrinks back into it ===== */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+.vt-on::view-transition-new(root),.vt-off::view-transition-old(root){
+  -webkit-mask-image:radial-gradient(closest-side,#000 60%,transparent 100%);mask-image:radial-gradient(closest-side,#000 60%,transparent 100%);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.vt-off::view-transition-old(root){z-index:2}
+.vt-off::view-transition-new(root){z-index:1}
+.theme-fade,.theme-fade *,.theme-fade *::before,.theme-fade *::after{transition:background-color .6s ease,color .6s ease,border-color .6s ease,fill .6s ease,stroke .6s ease,box-shadow .6s ease!important}
+.tt svg{animation:ttIn .7s cubic-bezier(.34,1.56,.64,1)}
+@keyframes ttIn{from{transform:rotate(-120deg) scale(.3);opacity:0}to{transform:none;opacity:1}}
+
 /* =====================================================================
    PALETTE "PIN" — Pantone: Sun Glare #DAFF02 · Exuberant Orange #FE572A ·
    Blue Violet #685BC7 · Cloud Dancer #F3F0EB · Darkest Hour #201E1F
@@ -1205,7 +1216,22 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
 
   // motyw
   const tt=document.getElementById('themeToggle');
-  tt.addEventListener('click',()=>{const n=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('pw-theme',n)}catch(e){}});
+  // light switches on: the new light theme grows out of the toggle as a soft glow; light switches off: it shrinks back into the toggle and dims
+  tt.addEventListener('click',()=>{
+    const n=root.getAttribute('data-theme')==='dark'?'light':'dark', toLight=n==='light';
+    const apply=()=>{root.setAttribute('data-theme',n);try{localStorage.setItem('pw-theme',n)}catch(e){}};
+    if(RM||!document.startViewTransition){root.classList.add('theme-fade');apply();setTimeout(()=>root.classList.remove('theme-fade'),700);return}
+    const r=tt.getBoundingClientRect(), x=r.left+r.width/2, y=r.top+r.height/2;
+    const S=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y))/0.3;   /* mask square whose solid core covers the farthest corner */
+    root.classList.add(toLight?'vt-on':'vt-off');
+    const vt=document.startViewTransition(apply);
+    vt.ready.then(()=>{
+      const open={maskSize:S+'px '+S+'px',maskPosition:(x-S/2)+'px '+(y-S/2)+'px'}, shut={maskSize:'0px 0px',maskPosition:x+'px '+y+'px'};
+      if(toLight) root.animate([{...shut,filter:'brightness(1.25) saturate(1.1)'},{...open,filter:'brightness(1) saturate(1)'}],{duration:1600,easing:'cubic-bezier(.45,0,.2,1)',fill:'both',pseudoElement:'::view-transition-new(root)'});
+      else root.animate([{...open,filter:'brightness(1)'},{...shut,filter:'brightness(.45)'}],{duration:1300,easing:'cubic-bezier(.5,0,.45,1)',fill:'both',pseudoElement:'::view-transition-old(root)'});
+    }).catch(()=>{});
+    vt.finished.finally(()=>root.classList.remove('vt-on','vt-off'));
+  });
 
   // szkło nawigacji śpi podczas przewijania
   let st; addEventListener('scroll',()=>{root.classList.add('is-scrolling');clearTimeout(st);st=setTimeout(()=>root.classList.remove('is-scrolling'),150)},{passive:true});
