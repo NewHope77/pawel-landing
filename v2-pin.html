@@ -774,6 +774,14 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
 [data-theme="light"].btn-white .btn-blue,[data-theme="light"].btn-white .btn-yellow,[data-theme="light"].btn-white .btn-ink,[data-theme="light"].btn-white .wa,[data-theme="light"].btn-white .fab{
   box-shadow:inset 0 1px .5px #fff,inset -3px -6px 10px -6px rgba(58,54,56,.2),0 0 0 1px rgba(32,30,31,.08),0 12px 28px -14px rgba(58,54,56,.5),0 2px 6px rgba(58,54,56,.12)}
 
+/* ===== hero: clean — headline, line, two glass buttons ===== */
+.hero-clean{display:flex;align-items:center;min-height:min(86svh,960px);padding:clamp(56px,8vw,120px) 0 clamp(80px,9vw,140px)}
+.hero-clean .wrap{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero-clean h1{font-size:clamp(48px,11.5vw,140px);margin-top:clamp(22px,2.4vw,34px)}
+.hero-clean .hero-sub{max-width:600px;margin:clamp(26px,3vw,42px) auto 0;font-size:clamp(17px,1.5vw,21px)}
+.hero-clean .hero-cta{justify-content:center;margin-top:clamp(28px,3vw,40px)}
+@media(max-width:700px){.hero-clean{min-height:min(82svh,760px)}}
+
 /* =====================================================================
    PALETTE "PIN" — Pantone: Sun Glare #DAFF02 · Exuberant Orange #FE572A ·
    Blue Violet #685BC7 · Cloud Dancer #F3F0EB · Darkest Hour #201E1F
@@ -926,39 +934,14 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
 </header>
 
 <main>
-<section class="hero" id="hero">
+<section class="hero hero-clean" id="hero">
   <div class="wrap">
     <span class="eyebrow live" data-anim><span class="live-dot"></span>Wolny na nowe projekty · odpowiadam w kilka godzin</span>
     <h1><span class="l1"><span class="w" style="--k:0">Strona</span> <span class="w" style="--k:1">internetowa</span></span><span class="l2"><em class="w" style="--k:2">w</em> <span class="mark w" style="--k:3"><span class="mk" aria-hidden="true"><i></i></span>2&nbsp;dni.</span></span></h1>
-    <div class="hero-row">
-      <div class="hero-copy">
-        <p class="hero-sub" data-anim style="--d:.2s"><b>Szybko. Profesjonalnie. Bez stresu.</b> Nowoczesna strona, która działa i przyciąga klientów.</p>
-        <div class="hero-cta" data-anim style="--d:.3s">
-          <a class="btn btn-blue" href="https://wa.me/48500864204" target="_blank" rel="noopener">Zamów stronę teraz <span class="arr">→</span></a>
-          <a class="btn btn-line" href="#realizacje">Zobacz realizacje</a>
-        </div>
-        <ul class="hero-checks" data-anim style="--d:.4s"><li>Indywidualny projekt</li><li>Responsywna na każdy ekran</li><li>Wsparcie po wdrożeniu</li></ul>
-      </div>
-      <div class="stage" data-anim style="--d:.22s">
-        <div class="disk"></div>
-        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48"/></svg>
-        <div class="browser-f">
-          <div class="browser">
-            <div class="b-top"><i></i><i></i><i></i><div class="b-url"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span id="bUrl">eucf.info</span><b class="b-caret"></b></div></div>
-            <div class="b-screen" id="bScreen">
-              <div class="b-shot is-on" data-url="eucf.info" data-name="EUCF 2026"><img src="shots/live/eucf.jpg" alt="Realizacja: EUCF 2026" width="760" height="1365" fetchpriority="high"></div>
-              <div class="b-shot" data-url="nadzor360.com.pl" data-name="NADZÓR360"><img src="shots/live/nadzor.jpg" alt="Realizacja: NADZÓR360" width="760" height="1365" loading="lazy"></div>
-              <div class="b-shot" data-url="newhope77.github.io/ekomasz2-sklep" data-name="EKOMASZ2"><img src="shots/live/rowery.jpg" alt="Realizacja: EKOMASZ2 — sklep z rowerami" width="760" height="1365" loading="lazy"></div>
-              <div class="b-shot" data-url="zlotaraczkabielsko24.pl" data-name="Złota Rączka"><img src="shots/live/zlota.jpg" alt="Realizacja: Złota Rączka Bielsko-Biała" width="760" height="1365" loading="lazy"></div>
-            </div>
-          </div>
-        </div>
-        <div class="chip"><span class="live-dot"></span><span>Realizacja: <b id="bName">EUCF 2026</b></span></div>
-        <div class="sticker" aria-label="Nie zdążę? Gratis!">
-          <svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="stk" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0"/></defs><text><textPath href="#stk" textLength="276" lengthAdjust="spacing">NIE ZDĄŻĘ? GRATIS! ✦ NIE ZDĄŻĘ? GRATIS! ✦</textPath></text></svg>
-          <span class="core">2<small>DNI</small></span>
-        </div>
-      </div>
+    <p class="hero-sub" data-anim style="--d:.2s"><b>Szybko. Profesjonalnie. Bez stresu.</b> Nowoczesna strona, która działa i przyciąga klientów.</p>
+    <div class="hero-cta" data-anim style="--d:.3s">
+      <a class="btn btn-blue" href="https://wa.me/48500864204" target="_blank" rel="noopener">Zamów stronę teraz <span class="arr">→</span></a>
+      <a class="btn btn-line" href="#realizacje">Zobacz realizacje</a>
     </div>
   </div>
 </section>
