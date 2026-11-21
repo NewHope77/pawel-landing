@@ -3,7 +3,7 @@
 import re, html, json, pathlib
 
 ROOT = pathlib.Path('/Users/pauls/claude-projects/personal-page')
-SRC = (ROOT / 'index.html').read_text(encoding='utf-8')
+SRC = (pathlib.Path(__file__).with_name('content_source.html')).read_text(encoding='utf-8')   # old site = content source (portfolio, prices, FAQ, blog)
 TPL = pathlib.Path(__file__).with_name('v2_template.html').read_text(encoding='utf-8')
 
 def strip(s): return html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', s)).strip())
@@ -106,8 +106,8 @@ out = (TPL
        .replace('%%POSTS%%', '\n'.join(posts)))
 left = re.findall(r'%%[A-Z_]+%%', out)
 assert not left, left
-(ROOT / 'v2.html').write_text(out, encoding='utf-8')
-print(f'v2.html: {len(works)} works, {len(fixed)}+{len(ind)} prices, {len(services)} services, {len(faqs)} faq, {len(posts)} posts')
+# orange variant is no longer published (kept buildable in `out`)
+print(f'content: {len(works)} works, {len(fixed)}+{len(ind)} prices, {len(services)} services, {len(faqs)} faq, {len(posts)} posts')
 
 # ---------- palette variant "pin" (Pantone: Sun Glare / Exuberant Orange / Blue Violet / Cloud Dancer / Darkest Hour) ----------
 PIN_MAP = [
@@ -129,5 +129,21 @@ assert style.count(anchor) == 1
 style = style.replace(anchor, pin_css + anchor)
 pin = out[:a] + style + out[b:]
 pin = pin.replace('<meta name="theme-color" content="#161316">', '<meta name="theme-color" content="#201e1f">')
-(ROOT / 'v2-pin.html').write_text(pin, encoding='utf-8')
-print('v2-pin.html: palette "pin"')
+
+# ---------- production: index.html = pin palette + the SEO head of the old site ----------
+oh = SRC[SRC.index('<head>'):SRC.index('</head>')]
+seo = oh[oh.index('<meta name="description"'):oh.index('<link rel="preconnect"')]      # description … twitter:image, favicons, manifest
+seo = seo.replace('<meta name="theme-color" content="#0e1116">', '<meta name="theme-color" content="#201e1f">')
+ld = re.search(r'\s*<script type="application/ld\+json">.*?</script>', SRC, re.S).group(0)
+title = re.search(r'<title>.*?</title>', SRC, re.S).group(0)
+idx = pin
+idx = re.sub(r'<title>.*?</title>', title, idx, count=1, flags=re.S)
+assert '<meta name="robots" content="noindex">' in idx
+idx = idx.replace('<meta name="robots" content="noindex">\n', '').replace('<meta name="robots" content="noindex">', '')
+idx = idx.replace('<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">', seo.strip(), 1)
+idx = idx.replace('</body>', ld.rstrip() + '\n</body>', 1)
+assert 'noindex' not in idx and 'application/ld+json' in idx and 'rel="canonical"' in idx
+json_txt = re.search(r'<script type="application/ld\+json">(.*?)</script>', idx, re.S).group(1)
+json.loads(json_txt)
+(ROOT / 'index.html').write_text(idx, encoding='utf-8')
+print('index.html: pin palette + SEO head + JSON-LD')
