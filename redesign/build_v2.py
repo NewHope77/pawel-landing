@@ -108,3 +108,26 @@ left = re.findall(r'%%[A-Z_]+%%', out)
 assert not left, left
 (ROOT / 'v2.html').write_text(out, encoding='utf-8')
 print(f'v2.html: {len(works)} works, {len(fixed)}+{len(ind)} prices, {len(services)} services, {len(faqs)} faq, {len(posts)} posts')
+
+# ---------- palette variant "pin" (Pantone: Sun Glare / Exuberant Orange / Blue Violet / Cloud Dancer / Darkest Hour) ----------
+PIN_MAP = [
+    ('rgba(69,48,39', 'rgba(58,54,56'), ('#453027', '#3a3638'), ('rgba(22,19,22', 'rgba(32,30,31'), ('#161316', '#201e1f'),
+    ('#211a17', '#2a2728'), ('#1a1512', '#1b191a'), ('#231c19', '#2a2728'), ('#120e0d', '#181617'), ('#4a1d06', '#201e1f'),
+    ('#f6f1ed', '#f3f0eb'), ('#efe7e1', '#ebe7e0'), ('rgba(246,241,237', 'rgba(243,240,235'),
+    ('rgba(255,109,41', 'rgba(254,87,42'), ('rgba(255,100,30', 'rgba(254,87,42'), ('rgba(255,90,20', 'rgba(254,87,42'),
+    ('#ff6d29', '#fe572a'), ('#FF6D29', '#FE572A'), ('#ff5a14', '#e8431a'), ('#e9520f', '#e8431a'), ('#ea5310', '#e8431a'),
+    ('rgba(255,146,84', 'rgba(255,128,96'), ('rgba(255,104,36', 'rgba(254,87,42'), ('rgba(238,78,14', 'rgba(230,64,26'),
+    ('rgba(255,138,72', 'rgba(255,122,92'), ('rgba(255,100,32', 'rgba(254,87,42'), ('rgba(232,74,12', 'rgba(226,62,24'),
+]
+pin_css = (pathlib.Path(__file__).with_name('palette_pin.css')).read_text(encoding='utf-8')
+a, b = out.index('<style>'), out.index('</style>')
+style = out[a:b]
+for o, n in PIN_MAP:
+    style = style.replace(o, n)
+anchor = '@media (prefers-reduced-motion: reduce){.btn-blue::before'
+assert style.count(anchor) == 1
+style = style.replace(anchor, pin_css + anchor)
+pin = out[:a] + style + out[b:]
+pin = pin.replace('<meta name="theme-color" content="#161316">', '<meta name="theme-color" content="#201e1f">')
+(ROOT / 'v2-pin.html').write_text(pin, encoding='utf-8')
+print('v2-pin.html: palette "pin"')
