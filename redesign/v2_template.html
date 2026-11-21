@@ -771,6 +771,15 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
 .tt svg{animation:ttIn .7s cubic-bezier(.34,1.56,.64,1)}
 @keyframes ttIn{from{transform:rotate(-120deg) scale(.3);opacity:0}to{transform:none;opacity:1}}
 
+/* ===== barely-there light that follows the cursor over the whole page ===== */
+:root{--glare:rgba(255,109,41,.055);--glare-2:rgba(255,109,41,.02)}
+[data-theme="dark"]{--glare:rgba(255,238,224,.06);--glare-2:rgba(255,238,224,.022)}
+.glare{position:fixed;left:0;top:0;z-index:9999;width:860px;height:860px;margin:-430px 0 0 -430px;border-radius:50%;pointer-events:none;
+  opacity:0;transition:opacity .8s ease;will-change:transform;
+  background:radial-gradient(closest-side,var(--glare) 0%,var(--glare-2) 42%,transparent 100%)}
+.glare.on{opacity:1}
+@media (hover:none),(pointer:coarse){.glare{display:none}}
+
 @media (prefers-reduced-motion: reduce){.btn-blue::before,.btn-yellow::before,.btn-ink::before,.wa::before,.fab::before,.btn-blue::after,.btn-yellow::after,.btn-ink::after,.wa::after,.fab::after{animation:none}}
 
 @media (prefers-reduced-motion: reduce){
@@ -787,6 +796,7 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
 </style>
 </head>
 <body id="top">
+<div class="glare" aria-hidden="true"></div>
 
 <header class="nav">
   <div class="wrap nav-in">
@@ -1014,6 +1024,16 @@ h1 em,h2 em,.foot-cta h2 em,.work-sec .h2 em{background:linear-gradient(100deg,v
   // licznik
   const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;co.unobserve(e.target);const el=e.target,t=+el.dataset.count,s=el.dataset.suffix||'';if(RM){el.textContent=t+s;return}const t0=performance.now(),d=1300;(function k(n){const p=Math.min((n-t0)/d,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3)))+s;if(p<1)requestAnimationFrame(k)})(t0);setTimeout(()=>{el.textContent=t+s},d+150)}),{threshold:.6});
   document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
+
+  // ledwo widoczne światło, które płynie za kursorem po całej stronie
+  (function(){
+    const g=document.querySelector('.glare'); if(!g||RM||!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+    let x=innerWidth/2, y=innerHeight/2, tx=x, ty=y, raf=0;
+    const step=()=>{x+=(tx-x)*.1; y+=(ty-y)*.1; g.style.transform='translate3d('+x+'px,'+y+'px,0)'; raf=(Math.abs(tx-x)+Math.abs(ty-y)>.4)?requestAnimationFrame(step):0};
+    addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return; tx=e.clientX; ty=e.clientY;
+      if(!g.classList.contains('on')){x=tx; y=ty; g.classList.add('on')} if(!raf) raf=requestAnimationFrame(step)},{passive:true});
+    document.documentElement.addEventListener('mouseleave',()=>g.classList.remove('on'));
+  })();
 
   // nieskończone animacje śpią poza ekranem
   const po=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('is-off',!e.isIntersecting)),{rootMargin:'120px'});
