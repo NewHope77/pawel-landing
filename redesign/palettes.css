@@ -1,0 +1,12 @@
+/* ===== palettes (appended after rolify — these literals are the palette values themselves) ===== */
+@property --a1{syntax:'<color>';inherits:true;initial-value:#daff02}
+@property --a2{syntax:'<color>';inherits:true;initial-value:#fe572a}
+@property --a3{syntax:'<color>';inherits:true;initial-value:#685bc7}
+:root{--a1:#daff02;--a2:#fe572a;--a3:#685bc7}
+html[data-palette="orange"]{--a1:#ffd166;--a2:#ff6d29;--a3:#c2410c}
+html[data-palette="ocean"]{--a1:#9ef0ff;--a2:#2f6bff;--a3:#0ea5a4}
+html[data-palette="berry"]{--a1:#ffc8e6;--a2:#ff2e7e;--a3:#7c3aed}
+html[data-palette="forest"]{--a1:#c6f68d;--a2:#12a26b;--a3:#0e7490}
+html[data-palette="mono"]{--a1:#f3f0eb;--a2:#55535a;--a3:#8d8a93}
+html[data-palette="mono"][data-theme="light"]{--a1:#dcd6cc}
+html.pal-anim{transition:--a1 1.9s cubic-bezier(.4,0,.2,1),--a2 1.9s cubic-bezier(.4,0,.2,1),--a3 1.9s cubic-bezier(.4,0,.2,1)}

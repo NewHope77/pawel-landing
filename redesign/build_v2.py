@@ -127,6 +127,10 @@ for o, n in PIN_MAP:
 anchor = '@media (prefers-reduced-motion: reduce){.btn-blue::before'
 assert style.count(anchor) == 1
 style = style.replace(anchor, pin_css + anchor)
+import sys as _sys; _sys.path.insert(0, str(pathlib.Path(__file__).parent))
+from rolify import rolify
+style = rolify(style)                                                     # accents → --a1/--a2/--a3
+style = style.replace('</style>', '') + (pathlib.Path(__file__).with_name('palettes.css')).read_text(encoding='utf-8')
 pin = out[:a] + style + out[b:]
 pin = pin.replace('<meta name="theme-color" content="#161316">', '<meta name="theme-color" content="#201e1f">')
 
